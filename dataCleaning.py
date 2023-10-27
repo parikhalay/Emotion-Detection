@@ -1,27 +1,18 @@
 import os
 import cv2
 import numpy as np
-import random
+
 
 # Define the input and output directories
-input_base_directory = 'dataset/train/'
-output_base_directory = 'datacleaning/final/'
+input_base_directory = 'dataset/test/'
+output_base_directory = 'datacleaning/test/'
 
 # Define the target dimensions for resizing
-target_width = 45  # You can adjust these dimensions as needed
-target_height = 45
-
-# Define the range of rotation angles in degrees
-min_rotation = -10
-max_rotation = 10
+target_width = 100
+target_height = 100
 
 # Define the range of brightness adjustments
-min_brightness = 0.7  # Darken
-max_brightness = 1  # Brighten
-
-# Define the range for minor cropping
-min_crop_percentage = 0.9
-max_crop_percentage = 1.0
+brightness_factor = 1.1
 
 # Loop through subdirectories in the base input directory
 for subdirectory in os.listdir(input_base_directory):
@@ -40,25 +31,32 @@ for subdirectory in os.listdir(input_base_directory):
         image = cv2.imread(input_path)
 
         if image is not None:
-            # Resize the image to the target dimensions
-            image = cv2.resize(image, (target_width, target_height))
+            # Get the original dimensions of the image
+            original_height, original_width, _ = image.shape
 
-            # Apply slight rotation
-            rotation_angle = random.uniform(min_rotation, max_rotation)
-            rotation_matrix = cv2.getRotationMatrix2D((target_width / 2, target_height / 2), rotation_angle, 1)
-            image = cv2.warpAffine(image, rotation_matrix, (target_width, target_height))
+            # Calculate the new dimensions while preserving the aspect ratio
+            if original_width > original_height:
+                new_width = target_width
+                new_height = int(original_height * (target_width / original_width))
+            else:
+                new_height = target_height
+                new_width = int(original_width * (target_height / original_height))
+
+            # Resizing the image to the new dimensions using high-quality interpolation
+            resized_image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_LANCZOS4)
+
+            # Create a canvas of the target dimensions
+            canvas = 255 * np.ones((target_height, target_width, 3), dtype=np.uint8)
+
+            # Calculate the position to paste the resized image in the canvas
+            x_offset = (target_width - new_width) // 2
+            y_offset = (target_height - new_height) // 2
+
+            # Paste the resized image onto the canvas
+            canvas[y_offset:y_offset + new_height, x_offset:x_offset + new_width] = resized_image
 
             # Apply brightness adjustment
-            brightness_factor = random.uniform(min_brightness, max_brightness)
-            image = cv2.convertScaleAbs(image, alpha=brightness_factor, beta=0)
-
-            # Apply minor cropping
-            crop_percentage = random.uniform(min_crop_percentage, max_crop_percentage)
-            crop_size = (int(target_width * crop_percentage), int(target_height * crop_percentage))
-            image = image[(target_height - crop_size[1]) // 2:(target_height + crop_size[1]) // 2,
-                    (target_width - crop_size[0]) // 2:(target_width + crop_size[0]) // 2]
+            canvas = cv2.convertScaleAbs(canvas, alpha=brightness_factor, beta=0)
 
             # Save the processed image to the output directory
-            cv2.imwrite(output_path, image)
-
-# You can add any additional processing steps as needed
+            cv2.imwrite(output_path, canvas)
