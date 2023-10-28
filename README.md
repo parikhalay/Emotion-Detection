@@ -51,17 +51,17 @@ Gaining these insights early on will allowed us to make informed decisions about
 
 ## Purpose of Each File
 
-1. **DataCleaning.py**: This Python script is responsible for cleaning and preprocessing image data. It resizes images to a consistent dimension, applies brightness adjustments, and saves the processed images. The purpose is to prepare the data for machine learning models.
+1. **dataCleaning.py**: This Python script is responsible for cleaning and preprocessing image data. It resizes images to a consistent dimension, applies brightness adjustments, and saves the processed images. The purpose is to prepare the data for machine learning models.
 
-2. **DataVisualisation.py**: This script is used for data visualization. It creates a class distribution bar graph and displays a grid of sample images from different classes, along with their pixel intensity distribution. This step is crucial to understand the dataset and its class distribution before model training.
+2. **dataVisualisation.py**: This script is used for data visualization. It creates a class distribution bar graph and displays a grid of sample images from different classes, along with their pixel intensity distribution. This step is crucial to understand the dataset and its class distribution before model training.
 
-3. **ConvertingPNGFilesToJPGFiles.py**: This script is designed to convert PNG image files to JPG format. It iterates through directories, identifies PNG files, converts them to JPG, and replaces the original PNG files.
+3. **pngTojpg.py**: This script is designed to convert PNG image files to JPG format. It iterates through directories, identifies PNG files, converts them to JPG, and replaces the original PNG files.
 
-4. **DataShrinking.py**: This script selects and copies a specific number of random images from a source directory to a target directory. It's useful for creating smaller subsets of a dataset for testing and experimentation.
+4. **datasetShrinking.py**: This script selects and copies a specific number of random images from a source directory to a target directory. It's useful for creating smaller subsets of a dataset for testing and experimentation.
 
 ## Data Cleaning
 
-**DataCleaning.py** performs the following data cleaning tasks:
+**dataCleaning.py** performs the following data cleaning tasks:
 
 1. Resizes images to a consistent dimension (100x100 pixels) while preserving the aspect ratio and quality of the Images.
 2. Applies brightness adjustments to images.
@@ -77,13 +77,13 @@ pip install opencv-python-headless numpy
 ```
 
 **Step 2**: Organized the directory structure
-Made sure the dataset is organized in a directory structure similar to the one expected by the code. Specifically, we have two directories: ../dataset/train/ (input directory) and ../datacleaning/train/ (output directory). The code will process images from the input directory and save the processed images in the output directory.
+Made sure the dataset is organized in a directory structure similar to the one expected by the code. Specifically, we have two directories: ../dataset/train/ (input directory) and ../dataCleaning/train/ (output directory). The code will process images from the input directory and save the processed images in the output directory.
 
 **Step 3**: Executed the code
 Ran the Python script by running:
 
 ```bash
-python data_cleaning.py
+python dataCleaning.py
 ```
 
 This will start the data cleaning process. The code will loop through the subdirectories in the input directory, resize the images to the specified target dimensions, apply brightness adjustments, and save the processed images in the output directory.
@@ -92,7 +92,7 @@ After executing these steps dataset will be standardized, with all images resize
 
 ## Data Visualization
 
-**DataVisualisation.py** is used for visualizing the dataset and provides insights into the data distribution. It includes the following visualizations:
+**dataVisualization.py** is used for visualizing the dataset and provides insights into the data distribution. It includes the following visualizations:
 
 1. Class distribution bar graph.
 2. A 5x5 grid of random sample images from different classes.
@@ -108,13 +108,13 @@ pip install opencv-python-headless numpy matplotlib
 ```
 
 **Step 2:** Organized  directory structure
-Made sure we have already executed the data cleaning code and have our dataset ready in the expected directory structure. Because code assumes that we have the standardized dataset in the `../datacleaning/train/` directory.
+Made sure we have already executed the data cleaning code and have our dataset ready in the expected directory structure. Because code assumes that we have the standardized dataset in the `../dataCleaning/train/` directory.
 
 **Step 3:** Executed the code
 Ran the Python script:
 
 ```bash
-python data_visualization.py
+python dataVisualization.py
 ```
 
 This will start the data visualization process. The code will generate a bar graph showing the class distribution, display 25 random sample images from different classes, and plot intensity distributions for these images.
@@ -126,20 +126,20 @@ After executing these steps, we will have a better understanding of your dataset
 **NOTE**: Below processes are already done no need to do it. It's just for reference.
 ### Converting PNG Files to JPG Files
 
-**ConvertingPNGFilesToJPGFiles.py** is designed to convert PNG images to JPG format. It iterates through directories, identifies PNG files, converts them to JPG, and replaces the original PNG files.
+**pngTojpg.py** is designed to convert PNG images to JPG format. It iterates through directories, identifies PNG files, converts them to JPG, and replaces the original PNG files.
 
 To execute the PNG to JPG conversion:
 
 ```bash
-python ConvertingPNGFilesToJPGFiles.py
+python pngTojpg.py.py
 ```
 
 ### Data Shrinking
 
-**DataShrinking.py** is used for selecting and copying a specific number of random images from a source directory to a target directory. This is useful for creating smaller subsets of a dataset for testing and experimentation.
+**datasetShrinking.py** is used for selecting and copying a specific number of random images from a source directory to a target directory. This is useful for creating smaller subsets of a dataset for testing and experimentation.
 
 To execute the data shrinking process:
 
 ```bash
-python DataShrinking.py
+python datasetShrinking.py
 ```
