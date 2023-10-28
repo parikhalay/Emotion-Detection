@@ -18,6 +18,9 @@ The primary objective of this project is to develop a Deep Learning Convolutiona
 
 ## Project Part I: Data Collection and Preparation
 
+# DATASET LINK
+https://drive.google.com/drive/folders/1wOocyriwibxSKxcRlbfkaWyLlso7r3Rb
+
 ### Training Data
 
 In this part, we collected suitable training data and performed exploratory data analysis (EDA). We followed these guidelines:
