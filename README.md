@@ -1,3 +1,8 @@
+# GITHUB LINK
+https://github.com/parikhalay/Emotion-Detection
+
+# DATASET LINK
+https://drive.google.com/drive/folders/1wOocyriwibxSKxcRlbfkaWyLlso7r3Rb
 
 # A.I.ducation Analytics Project Readme
 
@@ -17,9 +22,6 @@ The primary objective of this project is to develop a Deep Learning Convolutiona
 4. **Angry**: Signs of agitation or displeasure, which might manifest as tightened facial muscles, a tight-lipped frown, or narrowed eyes.
 
 ## Project Part I: Data Collection and Preparation
-
-# DATASET LINK
-https://drive.google.com/drive/folders/1wOocyriwibxSKxcRlbfkaWyLlso7r3Rb
 
 ### Training Data
 
