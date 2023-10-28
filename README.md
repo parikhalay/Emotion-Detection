@@ -1,11 +1,11 @@
 
 # A.I.ducation Analytics Project Readme
 
-Welcome to **A.I.ducation Analytics**, where we embark on the journey of revolutionizing academic feedback using Artificial Intelligence. In this project, we are shaping the future of AI-driven education with real-time analysis of student facial responses. Our innovative system empowers educators with insights to create dynamic and engaging learning experiences.
+In this project, we are analysing student facial responses thus shaping the future of AI-driven education. Our innovative system empowers educators with insights to create dynamic and engaging learning experiences.
 
 ## Project Introduction
 
-As AI lectures present complex algorithms, instructors are no longer in the dark about student engagement. Our system scrutinizes students' facial responses in real-time, distinguishing the curious from the overwhelmed. A sleek dashboard offers instructors immediate insights, such as 30% engaged, 20% neutral, and 10% nearing cognitive overload. Smart AI suggestions nudge adjustments in real-time, ensuring lectures evolve to meet learners' needs. As graduate students on this pioneering project, we are not just coding; we are sculpting the next phase of dynamic, AI-enhanced education.
+As AI lectures present complex algorithms, instructors are no longer in the dark about student engagement. Our system examines students' facial responses in real-time, distinguishing the curious from the overwhelmed. A sleek desing of the system offers instructors immediate insights, such as engaged, neutral, bored etc. Smart AI suggestions in real-time ensures lectures evolve to meet learners' needs. As graduate students on this pioneering project, we are not just coding; we are sculpting the next phase of dynamic, AI-enhanced education.
 
 ## Project Objective
 
@@ -20,32 +20,32 @@ The primary objective of this project is to develop a Deep Learning Convolutiona
 
 ### Training Data
 
-In this part, you will collect suitable training data and perform exploratory data analysis (EDA). Follow these guidelines:
+In this part, we collected suitable training data and performed exploratory data analysis (EDA). We followed these guidelines:
 
-- **Training Data**: Create datasets for training and testing your AI. Provide provenance information about the source of each image in your dataset. Reuse existing datasets, but ensure proper referencing.
-- **Data Size**: Have a minimum of 1500 training images and 500 testing images (across all classes), totaling a minimum of 2000 images for the four classes, before applying data augmentation strategies. Ensure balanced datasets, with roughly the same number of images per class.
-- **Use Real Data**: Use real training data; synthetic or generated data is not permitted.
+- **Training Data**: Created datasets for training and testing our AI system. Provided provenance information about the source of each image in  dataset. We reused existing datasets, but we ensured proper referencing.
+- **Data Size**: We have a minimum of 1500 training images and 500 testing images (across all classes), totaling a minimum of 2000 images for the four classes, before applying data augmentation strategies. Ensured balanced datasets, with roughly the same number of images per class.
+- **Used Real Data**: Used real training data; neither synthetic nor generated data.
 
 ### Data Cleaning
 
-Images can vary in sizes, resolutions, or lighting conditions. Standardize the dataset by:
+Images can vary in sizes, resolutions, or lighting conditions. We standardized the dataset by:
 
 - Resizing images to a consistent dimension.
 - Applying light processing for increased robustness (e.g., slight rotations, brightness adjustments, minor cropping).
 
 ### Labeling
 
-If datasets are not pre-labeled or if there's ambiguity, manual labeling may be required. Map single or multiple classes from different datasets to suitable training classes for your system. Consider using platforms like Labelbox for assistance.
+If datasets are not pre-labeled or if there's ambiguity, manual labeling is required. So we mapped single or multiple classes from different datasets to suitable training classes for our system. We considerd using platforms like Labelbox for assistance.
 
 ### Dataset Visualization
 
-Visualize your dataset to ensure an even class distribution and to understand the data's nature. This is crucial before diving into model training, as imbalanced datasets can affect model performance. Use Matplotlib to show:
+Visualized dataset to ensure an even class distribution and to understand the data's nature. This is crucial before diving into model training, as imbalanced datasets can affect model performance. We used Matplotlib to show:
 
 - Class distribution.
 - A few sample images from different classes.
 - Pixel intensity distribution for the images.
 
-Gaining these insights early on will allow you to make informed decisions about any additional preprocessing or cleaning that your dataset might require.
+Gaining these insights early on will allowed us to make informed decisions about any additional preprocessing or cleaning that the dataset might require.
 
 ## Get Started
 
@@ -69,18 +69,18 @@ Gaining these insights early on will allow you to make informed decisions about 
 
 To execute the data cleaning process:
 
-**Step 1**: Set up your environment
-Ensure that you have the required libraries installed. You'll need OpenCV (cv2) and NumPy. If you don't have them installed, you can use `pip` to install them:
+**Step 1**: Set up the environment
+Ensured the required libraries are installed. We needed OpenCV (cv2) and NumPy. Used Used `pip` to install them as follows:
 
 ```bash
 pip install opencv-python-headless numpy
 ```
 
-**Step 2**: Organize your directory structure
-Make sure your dataset is organized in a directory structure similar to the one expected by the code. Specifically, you should have two directories: ../dataset/train/ (input directory) and ../datacleaning/train/ (output directory). The code will process images from the input directory and save the processed images in the output directory.
+**Step 2**: Organized the directory structure
+Made sure the dataset is organized in a directory structure similar to the one expected by the code. Specifically, we have two directories: ../dataset/train/ (input directory) and ../datacleaning/train/ (output directory). The code will process images from the input directory and save the processed images in the output directory.
 
-**Step 3**: Execute the code
-Run the Python script or the notebook containing the code. You can execute it by running:
+**Step 3**: Executed the code
+Ran the Python script by running:
 
 ```bash
 python data_cleaning.py
@@ -100,18 +100,18 @@ After executing these steps dataset will be standardized, with all images resize
 
 To execute the data visualization:
 
-**Step 1:** Set up your environment
-Ensure that you have the required libraries installed. You'll need OpenCV (cv2), NumPy, and Matplotlib. If you don't have them installed, you can use `pip` to install them:
+**Step 1:** Set up the environment
+Ensured that the required libraries are installed. We will need OpenCV (cv2), NumPy, and Matplotlib. Used `pip` to install them:
 
 ```bash
 pip install opencv-python-headless numpy matplotlib
 ```
 
-**Step 2:** Organize your directory structure
-Make sure you have already executed the data cleaning code and have our dataset ready in the expected directory structure. Because code assumes that you have the standardized dataset in the `../datacleaning/train/` directory.
+**Step 2:** Organized  directory structure
+Made sure we have already executed the data cleaning code and have our dataset ready in the expected directory structure. Because code assumes that we have the standardized dataset in the `../datacleaning/train/` directory.
 
-**Step 3:** Execute the code
-Run the Python script or the notebook containing the code. You can execute it by running:
+**Step 3:** Executed the code
+Ran the Python script:
 
 ```bash
 python data_visualization.py
@@ -143,7 +143,3 @@ To execute the data shrinking process:
 ```bash
 python DataShrinking.py
 ```
-
-Please note that the effectiveness of these scripts depends on the specific dataset and requirements of your project. Make sure to adjust paths and parameters as needed for your dataset.
-
-If you encounter any issues or have questions, feel free to reach out for support.
