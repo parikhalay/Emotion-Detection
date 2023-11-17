@@ -34,32 +34,26 @@ def facial_image_loader(batch_size, shuffle_test=False):
 # Simplified CNN Model
 class FacialRecognitionCNN(nn.Module):
     def __init__(self, output_size):
-        super().__init__()
-        self.layer1 = nn.Conv2d(3, 64, 3, padding=1, stride=1)
-        self.layer2 = nn.Conv2d(64, 64, 3, padding=1, stride=1)
-        self.layer3 = nn.Conv2d(64, 128, 3, padding=1, stride=1)
-        self.layer4 = nn.Conv2d(128, 128, 3, padding=1, stride=1)
-        self.Maxpool1 = nn.MaxPool2d(2)
-        self.dropout1 = nn.Dropout(0.4)
-        self.layer5 = nn.Conv2d(128, 256, 3, padding=1, stride=1)
-        self.layer6 = nn.Conv2d(256, 256, 3, padding=1, stride=1)
-        self.Maxpool2 = nn.MaxPool2d(2)
-        self.dropout2 = nn.Dropout(0.4)
-        self.fc1 = nn.Linear(256 * 25 * 25 // 4, 512)  # Adjusted size based on the output of the previous layer
+        super(FacialRecognitionCNN, self).__init__()
+        self.conv1 = nn.Conv2d(3, 32, kernel_size=3, padding=1)
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=7, padding=3)
+        self.conv3 = nn.Conv2d(64, 128, kernel_size=7, padding=3)
+        self.conv4 = nn.Conv2d(128, 256, kernel_size=3, padding=1)
+        self.pool = nn.MaxPool2d(2, 2)
+        self.fc1 = nn.Linear(256 * 6 * 6, 512)  # Adjust the input size based on the output of the last convolutional layer
         self.fc2 = nn.Linear(512, output_size)
+        self.dropout = nn.Dropout(0.4)
 
     def forward(self, x):
-        x = F.relu(self.layer1(x))
-        x = self.Maxpool1(F.relu(self.layer2(x)))
-        x = F.relu(self.layer3(x))
-        x = self.Maxpool1(F.relu(self.layer4(x)))
-        x = self.dropout1(x)
-        x = F.relu(self.layer5(x))
-        x = self.Maxpool2(F.relu(self.layer6(x)))
+        x = self.pool(F.relu(self.conv1(x)))
+        x = self.pool(F.relu(self.conv2(x)))
+        x = self.pool(F.relu(self.conv3(x)))
+        x = self.pool(F.relu(self.conv4(x)))
         x = x.view(x.size(0), -1)
-        x = self.dropout2(x)
         x = F.relu(self.fc1(x))
-        return F.log_softmax(self.fc2(x), dim=1)
+        x = self.dropout(x)
+        x = self.fc2(x)
+        return F.log_softmax(x, dim=1)
 
 if __name__ == '__main__':
     batch_size = 120
@@ -137,4 +131,4 @@ if __name__ == '__main__':
     plt.show()
 
     # Save the trained model
-    torch.save(model.state_dict(), 'facial_recognition_model.pth')
+    torch.save(model.state_dict(), 'facial_recognition_variant2.pth')
