@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader, random_split
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
+import numpy as np
 
 # Function to load facial image dataset with refined data augmentation
 def facial_image_loader(batch_size, shuffle_test=False):
@@ -72,85 +73,30 @@ if __name__ == '__main__':
     training_losses = []
     validation_losses = []
 
-    # for epoch in range(epochs):
-    #     model.train()
-    #     running_loss = 0
-    #     for instances, labels in train_loader:
-    #         instances, labels = instances.to(device), labels.to(device)
-    #         optimizer.zero_grad()
-    #         output = model(instances)
-    #         loss = criterion(output, labels)
-    #
-    #         # L1 Regularization
-    #         l1_lambda = 0.001
-    #         l1_norm = sum(p.abs().sum() for p in model.parameters())
-    #         loss = loss + l1_lambda * l1_norm
-    #
-    #         loss.backward()
-    #         optimizer.step()
-    #         running_loss += loss.item()
-    #
-    #     training_losses.append(running_loss / len(train_loader))
-    #
-    #     model.eval()
-    #     validation_loss = 0
-    #     with torch.no_grad():
-    #         for instances, labels in validation_loader:
-    #             instances, labels = instances.to(device), labels.to(device)
-    #             output = model(instances)
-    #             loss = criterion(output, labels)
-    #             validation_loss += loss.item()
-    #
-    #     average_validation_loss = validation_loss / len(validation_loader)
-    #     validation_losses.append(average_validation_loss)
-    #     print(f'Epoch {epoch + 1}/{epochs}, Training Loss: {training_losses[-1]}, Validation Loss: {validation_losses[-1]}')
-    #
-    #     scheduler.step(average_validation_loss)
-    #
-    #     if epoch >= min_epochs - 1:
-    #         if average_validation_loss < best_validation_loss:
-    #             best_validation_loss = average_validation_loss
-    #             epochs_without_improvement = 0
-    #         else:
-    #             epochs_without_improvement += 1
-    #             if epochs_without_improvement == early_stopping_patience:
-    #                 print("Early stopping triggered")
-    #                 break
-    #
-    # # Plotting training and validation losses
-    # plt.plot(training_losses, label='Training Loss')
-    # plt.plot(validation_losses, label='Validation Loss')
-    # plt.xlabel('Epoch')
-    # plt.ylabel('Loss')
-    # plt.legend()
-    # plt.show()
 
-    model.eval()
-    all_predictions = []
-    all_labels = []
+    def evaluate_model(model, test_loader, device):
+        model.eval()
+        all_labels = []
+        all_predictions = []
 
-    with torch.no_grad():
-        for instances, labels in test_loader:
-            instances, labels = instances.to(device), labels.to(device)
-            output = model(instances)
-            _, predictions = torch.max(output, 1)
+        with torch.no_grad():
+            for instances, labels in test_loader:
+                instances, labels = instances.to(device), labels.to(device)
+                output = model(instances)
+                _, predictions = torch.max(output, 1)
 
-            all_predictions.extend(predictions.cpu().numpy())
-            all_labels.extend(labels.cpu().numpy())
+                all_labels.extend(labels.cpu().numpy())
+                all_predictions.extend(predictions.cpu().numpy())
 
-    # Generate and plot the confusion matrix
-    cm = confusion_matrix(all_labels, all_predictions)
+        return np.array(all_labels), np.array(all_predictions)
 
-    # Labels for each class
-    classes = ['Angry', 'Bored', 'Focused', 'Neutral']  # Update these based on your actual class names
 
-    # Plot the confusion matrix using seaborn
-    plt.figure(figsize=(8, 6))
-    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=classes, yticklabels=classes)
-    plt.title('Confusion Matrix')
-    plt.xlabel('Predicted')
-    plt.ylabel('Actual')
-    plt.show()
+    # Evaluate the model on the test set
+    true_labels, predicted_labels = evaluate_model(model, test_loader, device)
 
-    # Save the trained model
-    # torch.save(model.state_dict(), 'facial_recognition_model.pth')
+    # Create a confusion matrix
+    conf_matrix = confusion_matrix(true_labels, predicted_labels)
+
+    # Print the confusion matrix
+    print("Confusion Matrix:")
+    print(conf_matrix)
