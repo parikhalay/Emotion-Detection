@@ -31,6 +31,7 @@ class EarlyStopping:
             self.best_loss = val_loss
             self.counter = 0
 
+
 # Function to load the dataset
 def load_dataset(data_path, batch_size=64):
     # Data augmentation for the training set
@@ -54,10 +55,6 @@ def load_dataset(data_path, batch_size=64):
     train_size = int(0.7 * len(full_dataset))
     val_test_size = int(len(full_dataset)) - train_size
     val_size = test_size = val_test_size // 2
-
-    # Adjust for rounding errors if necessary
-    # if (train_size + 2 * val_size) < len(full_dataset):
-    #     val_size += 1
 
     # Splitting the dataset
     train_dataset, remaining_dataset = torch.utils.data.random_split(full_dataset, [train_size, val_test_size])
@@ -126,6 +123,7 @@ def train(model, device, train_loader, optimizer):
         train_loss += loss.item()
     return train_loss / len(train_loader)
 
+
 def validate(model, device, val_loader):
     model.eval()
     val_loss = 0
@@ -135,6 +133,7 @@ def validate(model, device, val_loader):
             output = model(data)
             val_loss += F.nll_loss(output, target, reduction='sum').item()
     return val_loss / len(val_loader.dataset)
+
 
 def test(model, device, test_loader):
     model.eval()
@@ -157,6 +156,7 @@ def test(model, device, test_loader):
 if __name__ == '__main__':
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = FacialExpressionCNN((3, 90, 90)).to(device)
+
     # Adjust optimizer to include weight decay for L2 regularization
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
 
