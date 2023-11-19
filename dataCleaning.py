@@ -7,11 +7,11 @@ input_base_directory = 'dataset/dataoriginal/train'
 output_base_directory = 'dataset/datacleaning/train'
 
 # Defining the target dimensions for resizing
-target_width = 100
-target_height = 100
+target_width = 90
+target_height = 90
 
 # Defining the range of brightness adjustments
-brightness_factor = 1.1
+brightness_factor = 1.05
 
 # Loop through subdirectories in the base input directory
 for subdirectory in os.listdir(input_base_directory):

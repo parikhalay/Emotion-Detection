@@ -85,5 +85,5 @@ if __name__ == '__main__':
     run_on_dataset(model, dataset_path, device, class_names)
 
     # Test with a single image
-    image_path = 'dataset/datacleaning/test/tired/image0002843.jpg'
+    image_path = 'dataset/datacleaning/train/angry/image0025427.jpg'
     run_on_single_image(model, image_path, device, class_names)
