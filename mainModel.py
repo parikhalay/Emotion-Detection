@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader, Dataset
 from torchvision.datasets import ImageFolder
 import matplotlib.pyplot as plt
 
+
 # Early Stopping Class
 class EarlyStopping:
     def __init__(self, patience=5, verbose=False):
