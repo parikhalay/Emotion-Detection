@@ -148,3 +148,62 @@ To execute the data shrinking process:
 ```bash
 python datasetShrinking.py
 ```
+
+# Develop and Load a CNN model
+### Main Model Code (mainModel.py):
+
+Contains the Python script for training the Main Model.
+Defines the model architecture, data loading, training, validation, testing, and early stopping.
+
+### Load Model Code (loadCNN.py):
+
+A Python script to load a trained model and make predictions on new data or single images.
+Contains functions for loading the model, predicting on a dataset, and predicting on a single image.
+
+### Variant 1 Code (variant1CL.py):
+
+Contains the Python script for training the Variant 1 Model.
+Similar to the Main Model but with an additional convolutional layer to capture more complex features.
+
+### Variant 2 Code (variant2KS.py):
+
+Contains the Python script for training the Variant 2 Model.
+Adjusts the kernel sizes of convolutional layers to experiment with capturing broader facial features.
+
+## Steps for Running the Code:
+### To Train and Evaluate the Models:
+
+1. Ensure you have the required libraries installed: numpy, torch, torchvision, matplotlib, sklearn, seaborn.
+   
+2. Place the training data in the directory specified by data_path in the script.
+   
+3. Run the script using a Python interpreter. For example, for the Main Model:
+
+```bash
+python mainModel.py
+```
+
+4. The script will train the model for a number of epochs, with early stopping if validation loss does not improve.
+
+5. After training, the script will automatically evaluate the model on the test set and output the metrics.
+
+6. The trained model will be saved to a file, e.g., facial_recognition_model.pth.
+
+## To Use a Trained Model for Prediction:
+
+1. Use the load_model.py script.
+
+2. Make sure the trained model file is in the same directory as the script or provide the correct path to the file.
+
+3. If predicting on a dataset, ensure the dataset is structured correctly and the path is specified in the script.
+
+4. Run the script:
+   
+```bash
+python loadCNN.py
+```
+
+5. To predict on a single image, replace the random_image_path in the script with the path to your image.
+
+6. The script will output predictions for the dataset and the single image.
+
