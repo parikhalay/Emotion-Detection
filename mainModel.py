@@ -8,6 +8,8 @@ from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader, Dataset
 from torchvision.datasets import ImageFolder
 import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
+import seaborn as sns
 
 
 # Early Stopping Class
@@ -138,20 +140,32 @@ def validate(model, device, val_loader):
 
 def test(model, device, test_loader):
     model.eval()
+    all_preds = []
+    all_targets = []
     test_loss = 0
     correct = 0
     with torch.no_grad():
         for data, target in test_loader:
             data, target = data.to(device), target.to(device)
             output = model(data)
-            test_loss += F.nll_loss(output, target, reduction='sum').item()  # sum up batch loss
-            pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
-            correct += pred.eq(target.view_as(pred)).sum().item()
+            _, preds = torch.max(output, 1)
+            correct += preds.eq(target.view_as(preds)).sum().item()
+            all_preds.extend(preds.cpu().numpy())
+            all_targets.extend(target.cpu().numpy())
 
     test_loss /= len(test_loader.dataset)
     test_accuracy = 100. * correct / len(test_loader.dataset)
-    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)'.format(
-        test_loss, correct, len(test_loader.dataset), test_accuracy))
+
+    conf_matrix = confusion_matrix(all_targets, all_preds)
+    accuracy = accuracy_score(all_targets, all_preds)
+    precision_macro = precision_score(all_targets, all_preds, average='macro')
+    recall_macro = recall_score(all_targets, all_preds, average='macro')
+    f1_macro = f1_score(all_targets, all_preds, average='macro')
+    precision_micro = precision_score(all_targets, all_preds, average='micro')
+    recall_micro = recall_score(all_targets, all_preds, average='micro')
+    f1_micro = f1_score(all_targets, all_preds, average='micro')
+
+    return conf_matrix, accuracy, precision_macro, recall_macro, f1_macro, precision_micro, recall_micro, f1_micro, test_loss, test_accuracy
 
 # Main Function
 if __name__ == '__main__':
@@ -192,13 +206,29 @@ if __name__ == '__main__':
     # Save the model
     torch.save(model.state_dict(), 'facial_recognition_model.pth')
 
-    # Plotting the training and validation loss
-    plt.plot(train_losses, label='Training loss')
-    plt.plot(val_losses, label='Validation loss')
+    plt.plot(range(len(train_losses)), train_losses, label='Training loss')
+    plt.plot(range(len(val_losses)), val_losses, label='Validation loss')
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.legend()
     plt.show()
 
-    # Test the model
-    test(model, device, test_loader)
+    conf_matrix, accuracy, precision_macro, recall_macro, f1_macro, precision_micro, recall_micro, f1_micro, test_loss, test_accuracy = test(
+        model, device, test_loader)
+
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(conf_matrix, annot=True, fmt='g', cmap='Blues')
+    plt.xlabel('Predicted Labels')
+    plt.ylabel('True Labels')
+    plt.title('Confusion Matrix')
+    plt.show()
+
+    print("\nMetrics Summary:")
+    print(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.2f}%")
+    print(f"Overall Accuracy: {accuracy:.4f}")
+    print(f"Macro Precision: {precision_macro:.4f}")
+    print(f"Macro Recall: {recall_macro:.4f}")
+    print(f"Macro F1 Score: {f1_macro:.4f}")
+    print(f"Micro Precision: {precision_micro:.4f}")
+    print(f"Micro Recall: {recall_micro:.4f}")
+    print(f"Micro F1 Score: {f1_micro:.4f}")
