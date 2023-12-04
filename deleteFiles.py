@@ -1,7 +1,7 @@
 import os
 
 # Define the base directory containing subdirectories
-base_directory = 'dataset/datacleaning/train'
+base_directory = 'dataset/datasplit/'
 
 
 # Function to delete files from subdirectories

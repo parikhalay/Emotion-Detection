@@ -204,7 +204,7 @@ if __name__ == '__main__':
             break
 
     # Save the model
-    torch.save(model.state_dict(), 'facial_recognition_model.pth')
+    torch.save(model.state_dict(), 'savemodel/facial_recognition_model.pth')
 
     plt.plot(range(len(train_losses)), train_losses, label='Training loss')
     plt.plot(range(len(val_losses)), val_losses, label='Validation loss')
