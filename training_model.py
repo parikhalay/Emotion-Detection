@@ -93,8 +93,6 @@ def load_dataset(data_path, batch_size=64):
     # Data augmentation for the training set
     train_transform = transforms.Compose([
         transforms.Resize((90, 90)),
-        transforms.RandomHorizontalFlip(),
-        transforms.RandomRotation(10),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.225, 0.225, 0.225])
     ])
@@ -158,6 +156,10 @@ if __name__ == '__main__':
         if early_stopping.early_stop:
             print("Early stopping")
             break
+
+    # Save the final model after training
+    torch.save(model.state_dict(), 'savemodel/facial_recognition_final_model.pth')
+    print("Final model saved")
 
     plt.plot(range(len(train_losses)), train_losses, label='Training loss')
     plt.plot(range(len(val_losses)), val_losses, label='Validation loss')

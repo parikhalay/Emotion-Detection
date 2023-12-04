@@ -3,8 +3,8 @@ import cv2
 import numpy as np
 
 # Define the input and output directories for data cleaning
-input_base_directory = 'dataset/dataoriginal/train'
-output_base_directory = 'dataset/datacleaning/train'
+input_base_directory = 'dataset/dataoriginalsplit/test'
+output_base_directory = 'dataset/datasplit/test'
 
 # Defining the target dimensions for resizing
 target_width = 90
