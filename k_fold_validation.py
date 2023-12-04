@@ -119,6 +119,7 @@ def k_fold_cross_validation(model_class, dataset_path, k=10, batch_size=64):
 
     kf = KFold(n_splits=k, shuffle=True, random_state=42)
     metrics = {
+        'accuracy': [],
         'precision_macro': [],
         'recall_macro': [],
         'f1_macro': [],
@@ -177,37 +178,49 @@ def k_fold_cross_validation(model_class, dataset_path, k=10, batch_size=64):
         # Time taken for this fold
         fold_time = time.time() - start_time
 
-        metrics['precision_macro'].append(precision_score(y_true, y_pred, average='macro'))
-        metrics['recall_macro'].append(recall_score(y_true, y_pred, average='macro'))
-        metrics['f1_macro'].append(f1_score(y_true, y_pred, average='macro'))
-        metrics['precision_micro'].append(precision_score(y_true, y_pred, average='micro'))
-        metrics['recall_micro'].append(recall_score(y_true, y_pred, average='micro'))
-        metrics['f1_micro'].append(f1_score(y_true, y_pred, average='micro'))
+        # Calculate metrics for this fold with formatting to 4 decimal places
+        accuracy = accuracy_score(y_true, y_pred)
+        precision_macro = precision_score(y_true, y_pred, average='macro')
+        recall_macro = recall_score(y_true, y_pred, average='macro')
+        f1_macro = f1_score(y_true, y_pred, average='macro')
+        precision_micro = precision_score(y_true, y_pred, average='micro')
+        recall_micro = recall_score(y_true, y_pred, average='micro')
+        f1_micro = f1_score(y_true, y_pred, average='micro')
 
-        print(f"Fold {fold + 1} completed in {fold_time:.2f} seconds.")
+        metrics['accuracy'].append(accuracy)
+        metrics['precision_macro'].append(precision_macro)
+        metrics['recall_macro'].append(recall_macro)
+        metrics['f1_macro'].append(f1_macro)
+        metrics['precision_micro'].append(precision_micro)
+        metrics['recall_micro'].append(recall_micro)
+        metrics['f1_micro'].append(f1_micro)
 
-    # Prepare data for CSV
+        print(f"Fold {fold + 1} completed in {fold_time:.2f} seconds. Accuracy: {accuracy:.4f}")
+
+    # Prepare data for CSV with formatting to 4 decimal places
     data_for_csv = []
     for i in range(k):
         data_for_csv.append([
             f"Fold {i+1}",
-            metrics['precision_macro'][i],
-            metrics['recall_macro'][i],
-            metrics['f1_macro'][i],
-            metrics['precision_micro'][i],
-            metrics['recall_micro'][i],
-            metrics['f1_micro'][i]
+            f"{metrics['accuracy'][i]:.4f}",
+            f"{metrics['precision_macro'][i]:.4f}",
+            f"{metrics['recall_macro'][i]:.4f}",
+            f"{metrics['f1_macro'][i]:.4f}",
+            f"{metrics['precision_micro'][i]:.4f}",
+            f"{metrics['recall_micro'][i]:.4f}",
+            f"{metrics['f1_micro'][i]:.4f}"
         ])
 
-    # Append average data
+    # Append average data with formatting
     data_for_csv.append([
         "Average",
-        np.mean(metrics['precision_macro']),
-        np.mean(metrics['recall_macro']),
-        np.mean(metrics['f1_macro']),
-        np.mean(metrics['precision_micro']),
-        np.mean(metrics['recall_micro']),
-        np.mean(metrics['f1_micro'])
+        f"{np.mean(metrics['accuracy']):.4f}",
+        f"{np.mean(metrics['precision_macro']):.4f}",
+        f"{np.mean(metrics['recall_macro']):.4f}",
+        f"{np.mean(metrics['f1_macro']):.4f}",
+        f"{np.mean(metrics['precision_micro']):.4f}",
+        f"{np.mean(metrics['recall_micro']):.4f}",
+        f"{np.mean(metrics['f1_micro']):.4f}"
     ])
 
     return data_for_csv
@@ -219,7 +232,7 @@ if __name__ == '__main__':
     # Save to CSV
     with open('cross_validation_results.csv', 'w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['Fold', 'Macro Precision', 'Macro Recall', 'Macro F1', 'Micro Precision', 'Micro Recall', 'Micro F1'])
+        writer.writerow(['Fold', 'Accuracy', 'Macro Precision', 'Macro Recall', 'Macro F1', 'Micro Precision', 'Micro Recall', 'Micro F1'])
         writer.writerows(cross_val_results)
 
     # Print the CSV content

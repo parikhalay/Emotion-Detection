@@ -1,4 +1,4 @@
-Image Path, Gender, Age Category
+Image Path,Gender,Age Category
 dataset/datasplit/train/neutral/ffhq_4353.jpg,f,1
 dataset/datasplit/train/neutral/ffhq_4192.jpg,m,1
 dataset/datasplit/train/neutral/ffhq_4623.jpg,f,2
