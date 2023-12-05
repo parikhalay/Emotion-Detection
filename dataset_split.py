@@ -45,5 +45,5 @@ def split_dataset(base_dir, output_dir, train_size=0.85):
             shutil.copy(os.path.join(category_dir, image), os.path.join(test_dir, category))
 
 # Example usage
-split_dataset('dataset/dataoriginal/train', 'dataset/datasplit')
+split_dataset('dataset/extra_images/data', 'dataset/extra_images/split')
 

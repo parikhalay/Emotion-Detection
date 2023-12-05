@@ -84,7 +84,7 @@ def test(model, device, test_loader):
 if __name__ == '__main__':
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = FacialExpressionCNN((3, 90, 90)).to(device)
-    model_path = 'savemodel/facial_recognition_final_model.pth'
+    model_path = 'savemodel/facial_recognition_best_model.pth'
     model.load_state_dict(torch.load(model_path))
 
     test_loader = load_test_dataset(data_path='dataset/datasplit/test')
