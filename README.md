@@ -150,60 +150,171 @@ python datasetShrinking.py
 ```
 
 # Develop and Load a CNN model
-### Main Model Code (mainModel.py):
+### Main Model Code (training_model.py):
 
-Contains the Python script for training the Main Model.
-Defines the model architecture, data loading, training, validation, testing, and early stopping.
+This script in Python is designed for the Main Model's training process.
+It encompasses defining the model's structure, handling data, executing the training and validation phases, and implementing early stopping mechanisms.
+
+### Model Evaluation Script (test_model.py):
+A dedicated Python script for evaluating the performance of the trained model on a test dataset. It includes functionality for loading the model, running it on the test data, and computing evaluation metrics like accuracy, precision, recall, and F1-score.
 
 ### Load Model Code (loadCNN.py):
 
-A Python script to load a trained model and make predictions on new data or single images.
-Contains functions for loading the model, predicting on a dataset, and predicting on a single image.
+This Python script is tasked with loading a previously trained model for making predictions on new or individual images.
+It includes functionalities for model loading, batch prediction, and individual image prediction.
 
 ### Variant 1 Code (variant1CL.py):
 
-Contains the Python script for training the Variant 1 Model.
-Similar to the Main Model but with an additional convolutional layer to capture more complex features.
+This script is responsible for training the Variant 1 Model.
+It follows a similar structure to the Main Model but incorporates an extra convolutional layer to detect more intricate features.
 
 ### Variant 2 Code (variant2KS.py):
 
-Contains the Python script for training the Variant 2 Model.
-Adjusts the kernel sizes of convolutional layers to experiment with capturing broader facial features.
+This script facilitates the training of the Variant 2 Model.
+It varies the kernel sizes in convolutional layers to explore the identification of broader facial features.
 
-## Steps for Running the Code:
-### To Train and Evaluate the Models:
+## Procedure for Executing the Code
+### For Model Training
 
-1. Ensure you have the required libraries installed: numpy, torch, torchvision, matplotlib, sklearn, seaborn.
-   
-2. Place the training data in the directory specified by data_path in the script.
-   
-3. Run the script using a Python interpreter. For example, for the Main Model:
+1. Install required libraries: numpy, torch, torchvision, matplotlib, sklearn, seaborn.
+
+2. Place your training data in the specified directory as per the data_path in the script.
+
+3. Execute the script using a Python interpreter, for example:
 
 ```bash
-python mainModel.py
+python training_model.py
 ```
 
-4. The script will train the model for a number of epochs, with early stopping if validation loss does not improve.
+4. The script will train the model across several epochs, with early stopping if validation loss does not improve.
 
-5. After training, the script will automatically evaluate the model on the test set and output the metrics.
+5. It will save best model with lowest validation loss and a final model e.g., facial_recognition_final_model.pth.
 
-6. The trained model will be saved to a file, e.g., facial_recognition_model.pth.
+### For Model Evaluation
+1. Use the test_model.py script for evaluating the trained model.
 
-## To Use a Trained Model for Prediction:
+2. Ensure the model file and test dataset are correctly placed as specified in the script.
 
-1. Use the load_model.py script.
+3. Run the evaluation script:
 
-2. Make sure the trained model file is in the same directory as the script or provide the correct path to the file.
+```bash
+python test_model.py
+```
+4. The script will load the model, apply it to the test data, and output evaluation metrics.
 
-3. If predicting on a dataset, ensure the dataset is structured correctly and the path is specified in the script.
+### For Predictions Using a Trained Model
 
-4. Run the script:
+1. Install Necessary Libraries: Make sure you have Python installed along with the required libraries: PyTorch, torchvision, PIL (Python Imaging Library), numpy, and Tkinter. These can be installed via pip or conda.
+
+2. Place the Model File: Ensure the trained model file facial_recognition_best_model.pth is located in the savemodel directory relative to the script.
+
+3. Launch the App: Run the Python script to start the application:
    
 ```bash
 python loadCNN.py
 ```
 
-5. To predict on a single image, replace the random_image_path in the script with the path to your image.
+4. Use the App:
 
-6. The script will output predictions for the dataset and the single image.
+   1. Once the application window opens, you will see an input field.
+   2. Enter the path of the image you want to classify or use the file dialog to select an image.
+   3. Press Submit. The application will display the selected image and its predicted class, along with the true class based on the image's file path.
+   4. The application uses the CNN model to classify the image into one of the four facial expressions.
 
+### K-Fold Cross-Validation
+1. Install Required Libraries: Ensure all necessary Python libraries (PyTorch, torchvision, NumPy, scikit-learn) are installed.
+
+2. Prepare Your Dataset: Place your dataset in the dataset/datacleaning/train directory. The dataset should be in a format compatible with torchvision.datasets.ImageFolder.
+
+3. Run the Script: Execute the script using Python:
+
+```bash
+python k_fold_validation.py
+```
+
+4. Script Execution:
+
+   1. The script will perform K-fold cross-validation on the dataset, training a new model for each fold.
+   2. The early stopping mechanism will prevent overfitting by halting training if validation loss doesn't improve.
+   3. After each fold, the script will save the model's state and print the performance metrics.
+
+5. Results:
+
+   1. Performance metrics for each fold, including accuracy, macro and micro precision, recall, and F1 score, will be printed.
+   2. A summary of the average performance across all folds is calculated and displayed.
+   3. These results are also saved to a CSV file named P3_k_validation_results.csv.
+
+6. The script outputs a CSV file with detailed performance metrics for each fold and the averages across all folds. This file helps in assessing the model's performance and generalization capability.
+
+## Image Labeling Tool
+### Overview
+This script, labelling.py, located in the label folder, provides a user interface for labeling images based on gender and age categories. It uses OpenCV for face detection and a trained model to suggest initial labels, which users can then manually adjust.
+
+### NOTE
+Avoid faceBox.py file
+
+### Steps to Run the Labeling Tool
+1. Install Required Libraries: Ensure Python is installed along with the OpenCV, Tkinter, and PIL libraries. These can be installed via pip.
+
+2. Model and Proto Files: Place the OpenCV model files (opencv_face_detector_uint8.pb, age_net.caffemodel, gender_net.caffemodel) and their corresponding proto files (opencv_face_detector.pbtxt, age_deploy.prototxt, gender_deploy.prototxt) in the same directory as the script.
+
+3. Prepare the Dataset: Organize your images in the ../dataset/datasplit/test directory, structured with category subfolders.
+
+4. Run the Script:
+
+```bash
+python labelling.py
+```
+
+5. Using the Tool:
+
+   1. The tool's GUI will display each image, along with detected gender and age range.
+   2. Adjust the gender (m/f) and age category (1 for young, 2 for middle-aged, 3 for senior) as needed.
+   3. Click Submit or press Enter to save your labels and move to the next image.
+   4. The tool saves your progress, so you can resume labeling later if needed.
+
+6. Output:
+
+   1. Labels are saved in a CSV file labels.csv with columns: Image Path, Gender, Age Category.
+   2. The tool also creates a progress.txt file to track the last processed image for resuming work.
+
+### Features of the Script
+* Face Detection: Uses OpenCV's DNN module to detect faces in images.
+* Suggested Labels: Automatically suggests gender and age labels based on the models.
+* Manual Input: Allows for manual correction of suggested labels.
+* Progress Tracking: Keeps track of the last labeled image, allowing for easy resumption.
+
+## Bias Analysis Tool
+### Overview
+This Python script is designed for facial expression recognition using a Convolutional Neural Network (CNN) and performs a bias analysis across different age and gender groups. It evaluates the model's performance in terms of accuracy, precision, recall, and F1-score for each group.
+
+### Steps to Run the Script
+1. Install Required Libraries: Ensure Python and the necessary libraries (PyTorch, pandas, Matplotlib, torchvision, scikit-learn) are installed.
+
+2. Prepare Model and Data:
+
+   1. Place the pre-trained model file facial_recognition_best_model.pth in the savemodel directory.
+   2. Ensure the CSV file Part3_test_labels.csv with image paths and labels is available.
+
+3. Run the Script:
+
+```bash
+python bias_analysis.py
+```
+
+4. Script Execution:
+
+   1. The script will load the CNN model and the dataset from the CSV file.
+   2. It performs bias analysis by evaluating the model separately on different age and gender groups.
+   3. The performance metrics for each group, as well as the overall average, are calculated and printed.
+
+5. Output:
+
+   1. The results of the bias analysis are saved in a CSV file P3_bias_analysis_results.csv.
+   2. The CSV file includes columns for Attribute (Age/Gender), Group, Accuracy, Precision, Recall, and F1-Score.
+   3. Printed results provide a quick overview of the model's performance across different groups.
+
+### Features of the Script
+* Group-Specific Evaluation: Analyzes the model's performance for different demographic groups.
+* Performance Metrics: Calculates and reports accuracy, precision, recall, and F1-score.
+* Result Export: Outputs the analysis results to a CSV file for further examination.
