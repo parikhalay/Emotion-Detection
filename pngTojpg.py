@@ -3,7 +3,7 @@ from PIL import Image
 import os
 
 # Replace 'root_directory' with the path to the root directory where you want to search for PNG files.
-root_directory = 'dataset'
+root_directory = 'dataset/extra_images/data'
 
 # Iterate through all directories and subdirectories
 for dirpath, dirnames, filenames in os.walk(root_directory):

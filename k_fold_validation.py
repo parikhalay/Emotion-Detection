@@ -146,7 +146,7 @@ def k_fold_cross_validation(model_class, dataset_path, k=10, batch_size=64):
 
         early_stopping = EarlyStopping(patience=5, verbose=True)
         best_val_loss = float('inf')
-        best_model_path = f'savemodel/best_model_fold_{fold + 1}.pth'
+        best_model_path = f'savemodel/fold/best_model_fold_{fold + 1}.pth'
 
         for epoch in range(15):
             train_loss = train(model, device, train_loader, optimizer)
@@ -162,7 +162,7 @@ def k_fold_cross_validation(model_class, dataset_path, k=10, batch_size=64):
                 print(f"Early stopping triggered at epoch {epoch}")
                 break
 
-        final_model_path = f'savemodel/final_model_fold_{fold + 1}.pth'
+        final_model_path = f'savemodel/fold/final_model_fold_{fold + 1}.pth'
         torch.save(model.state_dict(), final_model_path)
 
         y_true, y_pred = [], []
@@ -175,10 +175,10 @@ def k_fold_cross_validation(model_class, dataset_path, k=10, batch_size=64):
                 y_pred.extend(pred.view_as(target).cpu().numpy())
                 y_true.extend(target.cpu().numpy())
 
-        # Time taken for this fold
+        # Time taken for this P2_fold
         fold_time = time.time() - start_time
 
-        # Calculate metrics for this fold with formatting to 4 decimal places
+        # Calculate metrics for this P2_fold with formatting to 4 decimal places
         accuracy = accuracy_score(y_true, y_pred)
         precision_macro = precision_score(y_true, y_pred, average='macro')
         recall_macro = recall_score(y_true, y_pred, average='macro')
@@ -230,11 +230,11 @@ if __name__ == '__main__':
     cross_val_results = k_fold_cross_validation(FacialExpressionCNN, 'dataset/datacleaning/train')
 
     # Save to CSV
-    with open('cross_validation_results.csv', 'w', newline='') as file:
+    with open('P3_k_validation_results.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['Fold', 'Accuracy', 'Macro Precision', 'Macro Recall', 'Macro F1', 'Micro Precision', 'Micro Recall', 'Micro F1'])
         writer.writerows(cross_val_results)
 
     # Print the CSV content
-    with open('cross_validation_results.csv', 'r') as file:
+    with open('P3_k_validation_results.csv', 'r') as file:
         print(file.read())
